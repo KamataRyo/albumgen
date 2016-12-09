@@ -21,13 +21,20 @@ Run build.bat, you'll get office macro-enabled file in bin directory.
 
 http://blog.clockahead.com/2012/11/vba-vbacwsf.html
 
-バイナリファイルからVBAコードをエクスポートする場合
-binフォルダに、バイナリファイルを配置
-debuild.batファイルを実行
-（→ src フォルダ内にVBAコードがエクスポートされる。
-例: test.xls に含まれるVBAコードは、src/test.xls/ にエクスポートされる）
-VBAコードをバイナリファイルにインポートする場合
-srcフォルダ下のバイナリファイル名のフォルダ内に、VBAコードを配置
-（例: test.xls にインポートしたいVBAコードは、src/test.xls/ に配置）
-標準添付のbuild.batを実行
-（→ binフォルダ内のバイナリファイルのVBAコードがクリアされた後、srcフォルダ内のVBAコードがインポートされる。）
+
+## Project Management
+
+### Reset deploy key
+
+In UNIX shell, Run `./bin/keygen.sh` to generate new key pair.
+Then encrypt `./id_ecdsa` in [AppVeyor Encrypt tool](https://ci.appveyor.com/tools/encrypt).
+
+### install ariawase
+
+Run `./bin/install-ariawase.ps`.
+
+### Export VBA module
+
+### Build VBA module
+
+Run `./ariawase/build.bat`.

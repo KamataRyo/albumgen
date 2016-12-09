@@ -1,0 +1,82 @@
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.0.{build}
+
+# you can use {branch} name in version format too
+# version: 1.0.{build}-{branch}
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+# Start builds on tags only (GitHub and BitBucket)
+skip_non_tags: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+image: Office Developer Tools for Visual Studio 2015
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+  - git config --global user.name kamataryo
+  - git config --global user.mail mugil.cephalus+github.com@gmail.com
+
+# clone directory
+clone_folder: C:\projects\myproject
+
+# fetch repository as zip archive
+shallow_clone: true                 # default is "false"
+
+# set clone depth
+clone_depth: 1                      # clone entire repository history if not defined
+
+# environment variables
+environment:
+  # this is how to set encrypted variable. Go to "Encrypt data" page in account menu to encrypt data.
+  DEPLOY_KEY:
+    secure: 7OIsqCDg4Q0hsNTZYf3weulJxCHlEZ5HdMh0aBgg1kbr5PAAljPilF93cwRmyQsmENzJLDAYREdv+iMLz4E7f1wXTfNX5U62FiyLD7L26tB5g4HFrZfAkULPXi3+pftaJwF7P6LJDBv1vL++tw1LPRVWkLVWM22q43SQwt8shsog32JpXusSd6HgDDtn5EX0GexNTBWuVz/4b+RCRifPfE455odBXcZX4b8SABpqaR8=
+
+# build cache to preserve files/folders between builds
+cache:
+  - C:\projects\myproject\ariawase
+  - C:\OpenSSH-Win32
+
+# scripts that run after cloning repository
+install:
+  # install OpenSSH-Win32
+  - ps: curl https://github.com/PowerShell/Win32-OpenSSH/releases/download/v0.0.4.0/OpenSSH-Win32.zip | unzip C:\OpenSSH-Win32
+  # install deploy key
+  - ps: echo $DEPLOY_KEY > ~/.ssh/id_ecdsa
+  # install Ariawase
+  - ps: C:\projects\myproject\bin\install-ariawase.ps
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+  - ps: C:\projects\myproject\bin\build.ps
+
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+# to run your custom scripts instead of provider deployments
+deploy_script:
+  - ps: C:\projects\myproject\bin\deploy.ps

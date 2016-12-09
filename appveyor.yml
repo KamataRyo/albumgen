@@ -51,14 +51,15 @@ environment:
 # build cache to preserve files/folders between builds
 cache:
   - C:\projects\myproject\ariawase
-  - C:\OpenSSH-Win32
 
 # scripts that run after cloning repository
 install:
-  # install OpenSSH-Win32
-  - ps: curl https://github.com/PowerShell/Win32-OpenSSH/releases/download/v0.0.4.0/OpenSSH-Win32.zip | unzip C:\OpenSSH-Win32
+  # set $home
+  - ps: $HOMEDRIVE = "C:\"
+  - ps: $HOMEPATH = "Users\" + $env:username
+  - ps: (get-psprovider 'FileSystem').Home = $HOMEDRIVE + $HOMEPATH
   # install deploy key
-  - ps: echo $DEPLOY_KEY > ~/.ssh/id_ecdsa
+  - ps: $DEPLOY_KEY | Out-File ~/.ssh/id_ecdsa
   # install Ariawase
   - ps: C:\projects\myproject\bin\install-ariawase.ps
 

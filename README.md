@@ -1,5 +1,7 @@
 # albumgen
 
+[![Build status](https://ci.appveyor.com/api/projects/status/xeip7jp71bc509yc?svg=true)](https://ci.appveyor.com/project/kamataryo/albumgen)
+
 Excel macro to generate photo album.
 
 ## open ssh for SSH
